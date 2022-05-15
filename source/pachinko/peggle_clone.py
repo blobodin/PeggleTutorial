@@ -23,6 +23,8 @@ def draw():
     entities.draw_pegs()
     entities.draw_buckets()
 
+    pygame.draw.line(commons.screen, (100, 0, 0), (commons.screen_w / 2 - commons.screen_w / 4, commons.screen_h / 7), (commons.screen_w / 2 + commons.screen_w / 4, commons.screen_h / 7), 10)
+
     score_loc = (commons.screen_w / 35, commons.screen_h / 30)
     text_surface, rect = commons.font.render(f"Score: {states.score}", (0, 0, 0))
     commons.screen.blit(text_surface, score_loc)
@@ -121,7 +123,8 @@ while app_running:
                 #         d = dist(Vector(event.pos[0], event.pos[1]), b.position)
                 #         if d > 2 * b.radius:
                 #             print("Hello")
-                entities.balls.append(Ball(Vector(event.pos[0], event.pos[1]), Vector(0, 0)))
+                if event.pos[1] < commons.screen_h / 7:
+                    entities.balls.append(Ball(Vector(event.pos[0], event.pos[1]), Vector(0, 0)))
             elif event.button == pygame.BUTTON_RIGHT and states.peg_place:
                 entities.placed_pegs.append(Peg(Vector(event.pos[0], event.pos[1])))
 
