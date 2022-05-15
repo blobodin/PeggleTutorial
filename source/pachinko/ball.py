@@ -9,6 +9,7 @@ from vector import *
 from enum import Enum
 from pygame.locals import *
 import entities
+import states
 
 class BallType(Enum):
     DEFAULT = 0
@@ -50,9 +51,24 @@ class Ball:
         if self.position.y < self.radius:
             self.velocity.y = -self.velocity.y
         elif self.position.y > commons.screen_h + self.radius:
+            
+            for b in entities.buckets:
+                if b.in_bucket(self.position):
+                    states.score += b.value
+
             self.alive = False
 
-        for p in entities.pegs:
+        # for b in entities.balls:
+        #     if b != self:
+        #         d = dist(self.position, b.position)
+        #         if d - self.radius <= b.radius:
+        #             deltanorm = (self.position - b.position) / d
+        #             self.position = self.position + deltanorm * (b.radius - (d - self.radius) + .1)
+        #
+        #             self.velocity = (self.velocity - deltanorm * (2 * (dot(deltanorm, self.velocity)))) * (.695 + np.random.uniform(-.1, .1))
+        #             b.velocity = (b.velocity + deltanorm * (2 * (dot(deltanorm, self.velocity)))) * (.695 + np.random.uniform(-.1, .1))
+
+        for p in entities.placed_pegs:
             d = dist(self.position, p.position)
             if d - self.radius <= p.radius:
                 deltanorm = (self.position - p.position) / d
@@ -65,3 +81,10 @@ class Ball:
                 deltanorm = (self.position - p.position) / d
                 self.position = self.position + deltanorm * (p.radius - (d - self.radius) + .1)
                 self.velocity = (self.velocity - deltanorm * (2 * (dot(deltanorm, self.velocity)))) * (.695 + np.random.uniform(-.1, .1))
+
+                if p.peg_type == 1:
+                    p.peg_type = 0
+                    p.image = pygame.image.load("res/images/pegs/28x28/lit_yellow_peg.png")
+                    states.pegs_revealed -= 1
+                    if states.pegs_revealed == 0:
+                        states.peg_place = True

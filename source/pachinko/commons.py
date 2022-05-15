@@ -8,3 +8,4 @@ delta_time = 0.0
 gravity = 650
 
 screen = None
+font = None

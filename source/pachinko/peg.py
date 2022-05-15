@@ -9,6 +9,7 @@ from pygame.locals import *
 
 class PegType(Enum):
     DEFAULT = 0
+    LIGHT = 1
 
 class Peg:
     def __init__(self, position: Vector, radius: float = 14,
