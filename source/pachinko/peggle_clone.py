@@ -33,7 +33,7 @@ def draw():
         text_surface, rect = commons.font.render("Place Pegs with Right Click (Remove all with Spacebar)", (0, 0, 0))
         commons.screen.blit(text_surface, (score_loc[0], score_loc[1] + commons.screen_h / 30))
 
-        text_surface, rect = commons.font.render("'Based' on what you know, write the number", (255, 192, 0))
+        text_surface, rect = commons.font.render("'Based' on what you know, score the number", (255, 192, 0))
         commons.screen.blit(text_surface, (score_loc[0], score_loc[1] + 2 * commons.screen_h / 30))
 
     if states.win:
