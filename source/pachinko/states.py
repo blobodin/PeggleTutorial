@@ -3,6 +3,9 @@ from enum import Enum
 peg_place = False
 pegs_revealed = None
 score = 0
+win_cond = []
+prev_scores = []
+win = False
 
 class GameState(Enum):
     MENU = 0

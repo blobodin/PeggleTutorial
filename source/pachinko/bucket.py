@@ -50,5 +50,5 @@ class Bucket:
         for peg in self.right_wall:
             peg.draw()
 
-        text_surface, rect = commons.font.render(f"{self.value}", (255, 192, 200))
-        commons.screen.blit(text_surface, self.position.make_int_tuple())
+        text_surface, rect = commons.font.render(f"{self.value}", (255, 192, 0))
+        commons.screen.blit(text_surface, (self.position - Vector(30, 0)).make_int_tuple())

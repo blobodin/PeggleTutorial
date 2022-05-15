@@ -51,10 +51,18 @@ class Ball:
         if self.position.y < self.radius:
             self.velocity.y = -self.velocity.y
         elif self.position.y > commons.screen_h + self.radius:
-            
+
             for b in entities.buckets:
                 if b.in_bucket(self.position):
                     states.score += b.value
+
+                    if states.win_cond[len(states.prev_scores)] == b.value:
+                        if len(states.prev_scores) < len(states.win_cond):
+                            states.prev_scores.append(b.value)
+                            if len(states.prev_scores) == len(states.win_cond):
+                                states.win = True
+                    else:
+                        states.prev_scores = []
 
             self.alive = False
 

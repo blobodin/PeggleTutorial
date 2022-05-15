@@ -17,14 +17,27 @@ def update():
     entities.update_balls()
 
 def draw():
-    commons.screen.fill((50, 50, 50))
+    commons.screen.fill((1,75,32))
 
     entities.draw_balls()
     entities.draw_pegs()
     entities.draw_buckets()
 
+    score_loc = (commons.screen_w / 35, commons.screen_h / 30)
     text_surface, rect = commons.font.render(f"Score: {states.score}", (0, 0, 0))
-    commons.screen.blit(text_surface, (40, 250))
+    commons.screen.blit(text_surface, score_loc)
+
+    if states.peg_place:
+        text_surface, rect = commons.font.render("Place Pegs with Right Click (Remove all with Spacebar)", (0, 0, 0))
+        commons.screen.blit(text_surface, (score_loc[0], score_loc[1] + commons.screen_h / 30))
+
+        text_surface, rect = commons.font.render("'Based' on what you know, write the number", (255, 192, 0))
+        commons.screen.blit(text_surface, (score_loc[0], score_loc[1] + 2 * commons.screen_h / 30))
+
+    if states.win:
+        text_surface, rect = commons.font.render("Winner!", (255, 192, 200))
+        commons.screen.blit(text_surface, (score_loc[0], score_loc[1] + 3 * commons.screen_h / 30))
+
 
 
 pygame.init()
@@ -43,7 +56,7 @@ clock = pygame.time.Clock()
 
 mouse_position = (0, 0)
 
-commons.font = pygame.freetype.Font("res/fonts/Evogria.otf", 24)
+commons.font = pygame.freetype.Font("res/fonts/Evogria.otf", 20)
 
 # Level description
 mid_x = int(commons.screen_w / 2)
@@ -58,28 +71,33 @@ for i in range(len(rows)):
     for x in xs:
         entities.level_pegs.append(Peg(Vector(x, y)))
 
-entities.light_pegs = [3, 9, 12, 19, 27, 30, 38, 39, 40, 50, 51, 63, 91]
-entities.light_pegs += [46, 47, 48, 58, 60, 72, 73, 74]
-entities.light_pegs += [66, 67, 68, 80, 82, 94, 95, 96]
+# entities.light_pegs = [3, 9, 12, 19, 27, 30, 38, 39, 40, 50, 51, 63, 91]
+entities.light_pegs += [1, 17, 37]
+entities.light_pegs += [5, 6, 12, 14, 30, 32, 41, 42]
+entities.light_pegs += [45, 47, 71, 72, 73, 103]
+entities.light_pegs += [45 + 5, 46 + 5, 47 + 5, 64, 72 + 5, 92, 101 + 5, 102 + 5, 103 + 5]
+entities.light_pegs += [46 + 9, 47 + 9, 67, 69, 95, 97, 102 + 9, 103 + 9]
+# entities.light_pegs += [66, 67, 68, 80, 82, 94, 95, 96]
 states.pegs_revealed = len(entities.light_pegs)
 
 for i in entities.light_pegs:
     entities.level_pegs[i].peg_type = 1
 
-entities.buckets.append(Bucket(Vector(mid_x, commons.screen_h - commons.screen_h/20), commons.screen_w / 16, commons.screen_h / 12, 100))
+entities.buckets.append(Bucket(Vector(mid_x, commons.screen_h - commons.screen_h/20), commons.screen_w / 16, commons.screen_h / 12, 10000))
 
 shift1 = commons.screen_w * (1 / 32 + 1 / 16)
-entities.buckets.append(Bucket(Vector(mid_x - shift1, commons.screen_h - commons.screen_h/20), commons.screen_w / 8, commons.screen_h / 12, 10))
-entities.buckets.append(Bucket(Vector(mid_x + shift1, commons.screen_h - commons.screen_h/20), commons.screen_w / 8, commons.screen_h / 12, 10))
+entities.buckets.append(Bucket(Vector(mid_x - shift1, commons.screen_h - commons.screen_h/20), commons.screen_w / 8, commons.screen_h / 12, 1000))
+entities.buckets.append(Bucket(Vector(mid_x + shift1, commons.screen_h - commons.screen_h/20), commons.screen_w / 8, commons.screen_h / 12, 1000))
 
 shift2 = commons.screen_w * (1/ 32 + 1 / 8 + 1/14)
-entities.buckets.append(Bucket(Vector(mid_x - shift2, commons.screen_h - commons.screen_h/20), commons.screen_w / 7, commons.screen_h / 12, 5))
-entities.buckets.append(Bucket(Vector(mid_x + shift2, commons.screen_h - commons.screen_h/20), commons.screen_w / 7, commons.screen_h / 12, 5))
+entities.buckets.append(Bucket(Vector(mid_x - shift2, commons.screen_h - commons.screen_h/20), commons.screen_w / 7, commons.screen_h / 12, 100))
+entities.buckets.append(Bucket(Vector(mid_x + shift2, commons.screen_h - commons.screen_h/20), commons.screen_w / 7, commons.screen_h / 12, 100))
 
 shift3 = commons.screen_w * (1/ 32 + 1 / 8 + 1 / 7 + 1 / 10)
-entities.buckets.append(Bucket(Vector(mid_x - shift3, commons.screen_h - commons.screen_h/20), commons.screen_w / 5, commons.screen_h / 12, 1))
-entities.buckets.append(Bucket(Vector(mid_x + shift3, commons.screen_h - commons.screen_h/20), commons.screen_w / 5, commons.screen_h / 12, 1))
+entities.buckets.append(Bucket(Vector(mid_x - shift3, commons.screen_h - commons.screen_h/20), commons.screen_w / 5, commons.screen_h / 12, 10))
+entities.buckets.append(Bucket(Vector(mid_x + shift3, commons.screen_h - commons.screen_h/20), commons.screen_w / 5, commons.screen_h / 12, 10))
 
+states.win_cond = [10, 10000, 10, 10, 10, 100]
 
 while app_running:
     mouse_position = pygame.mouse.get_pos()
