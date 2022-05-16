@@ -56,13 +56,17 @@ class Ball:
                 if b.in_bucket(self.position):
                     states.score += b.value
 
-                    if states.win_cond[len(states.prev_scores)] == b.value:
-                        if len(states.prev_scores) < len(states.win_cond):
-                            states.prev_scores.append(b.value)
-                            if len(states.prev_scores) == len(states.win_cond):
-                                states.win = True
-                    else:
-                        states.prev_scores = []
+                    if len(states.prev_scores) < len(states.win_cond):
+                        if states.win_cond[len(states.prev_scores)] == b.value:
+                            if len(states.prev_scores) < len(states.win_cond):
+                                states.prev_scores.append(b.value)
+                                if len(states.prev_scores) == len(states.win_cond):
+                                    states.win = True
+                        else:
+                            if states.win_cond[0] == b.value:
+                                states.prev_scores = [b.value]
+                            else:
+                                states.prev_scores = []
 
             self.alive = False
 
