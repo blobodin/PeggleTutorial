@@ -123,9 +123,8 @@ while app_running:
                 #         d = dist(Vector(event.pos[0], event.pos[1]), b.position)
                 #         if d > 2 * b.radius:
                 #             print("Hello")
-                # if event.pos[1] < commons.screen_h / 7:
-                #     entities.balls.append(Ball(Vector(event.pos[0], event.pos[1]), Vector(0, 0)))
-                entities.balls.append(Ball(Vector(event.pos[0], event.pos[1]), Vector(0, 0)))
+                if event.pos[1] < commons.screen_h / 7:
+                    entities.balls.append(Ball(Vector(event.pos[0], event.pos[1]), Vector(0, 0)))
             elif event.button == pygame.BUTTON_RIGHT and states.peg_place:
                 entities.placed_pegs.append(Peg(Vector(event.pos[0], event.pos[1])))
 
